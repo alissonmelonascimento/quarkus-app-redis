@@ -11,8 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.vertx.redis.client.Response;
-
 @Singleton
 public class EmployeeService {
 
