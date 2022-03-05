@@ -19,12 +19,14 @@ public class EmployeeResourceTest {
 
     @Test
     public void deveExcluirInserirRetornarEmpregado() {
+        //excluindo empregado
         given()
           .when()
              .delete("/employees")
           .then()
              .statusCode(204);
 
+        
         Child child = new Child();
         child.id = "11";
         child.name = "Enzo";
@@ -37,6 +39,7 @@ public class EmployeeResourceTest {
         emp.salary = new BigDecimal(100);
         emp.childs = childs;
 
+        //inserindo empregado
         given()
             .contentType(ContentType.JSON)
             .body(emp)
@@ -45,6 +48,7 @@ public class EmployeeResourceTest {
           .then()
              .statusCode(204);
 
+        //retornando empregado
         given()
             .when()
                 .get("/employees/employee")
