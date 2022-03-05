@@ -1,7 +1,5 @@
 package org.acme;
 
-import io.quarkus.redis.client.RedisClient;
-
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -11,11 +9,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.quarkus.redis.client.RedisClient;
+import io.quarkus.redis.client.reactive.ReactiveRedisClient;
+import io.smallrye.mutiny.Uni;
+
 @Singleton
 public class EmployeeService {
 
     @Inject
-    RedisClient redisClient;    
+    RedisClient redisClient;
+
+    @Inject
+    ReactiveRedisClient reactiveRedisClient;
 
     public void insert(Employee employee) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
@@ -25,7 +30,7 @@ public class EmployeeService {
         //redisClient.hset(Arrays.asList("employee", str ));
     }
 
-    Employee get(String key) throws JsonMappingException, JsonProcessingException {
+    public Employee get(String key) throws JsonMappingException, JsonProcessingException {
 
         //Response res = redisClient.get(key);
 
@@ -37,6 +42,12 @@ public class EmployeeService {
         Employee emp = mapper.readValue(str, Employee.class);
 
         return emp;
-    } 
+    }
+
+    public Uni<Void> delete() {
+        String key = "employee";
+        return reactiveRedisClient.del(Arrays.asList(key))
+                .map(response -> null);
+    }
     
 }

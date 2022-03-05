@@ -1,6 +1,7 @@
 package org.acme;
 
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
 
@@ -27,5 +28,10 @@ public class EmployeeResource {
     public Employee get(@PathParam("key") String key) throws JsonMappingException, JsonProcessingException {
         return employeeService.get(key);
     }
+
+    @DELETE
+    public void delete() throws JsonProcessingException {
+        employeeService.delete();
+    }    
 
 }
