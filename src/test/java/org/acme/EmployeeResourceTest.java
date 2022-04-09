@@ -36,6 +36,7 @@ public class EmployeeResourceTest {
         emp.id = "1";
         emp.name = "Alisson";
         emp.salary = new BigDecimal(100);
+
         emp.childs = childs;
 
         //inserindo empregado

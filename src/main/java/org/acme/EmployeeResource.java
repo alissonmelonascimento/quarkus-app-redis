@@ -11,12 +11,17 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 
+import io.smallrye.mutiny.Uni;
+
 
 @Path("/employees")
 public class EmployeeResource {
 
     @Inject
     EmployeeService employeeService;
+
+    //@Inject
+    //EmployeeHashService employeeService;
 
     @POST
     public void create(Employee employee) throws JsonProcessingException {
@@ -30,8 +35,9 @@ public class EmployeeResource {
     }
 
     @DELETE
-    public void delete() throws JsonProcessingException {
-        employeeService.delete();
-    }    
+    @Path("/{key}")
+    public Uni<Void> delete(@PathParam("key") String key) throws JsonProcessingException {
+        return employeeService.delete(key);
+    }
 
 }

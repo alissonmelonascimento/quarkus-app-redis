@@ -25,18 +25,12 @@ public class EmployeeService {
     public void insert(Employee employee) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         String str = mapper.writeValueAsString(employee);
-        redisClient.set(Arrays.asList("employee", str ));
-
-        //redisClient.hset(Arrays.asList("employee", str ));
+        redisClient.set(Arrays.asList("employee-"+employee.id, str ));
     }
 
     public Employee get(String key) throws JsonMappingException, JsonProcessingException {
 
-        //Response res = redisClient.get(key);
-
         String str = redisClient.get(key).toString();
-
-        //String str = redisClient.hget(arg0, arg1) (key).toString();
 
         ObjectMapper mapper = new ObjectMapper();
         Employee emp = mapper.readValue(str, Employee.class);
@@ -44,8 +38,7 @@ public class EmployeeService {
         return emp;
     }
 
-    public Uni<Void> delete() {
-        String key = "employee";
+    public Uni<Void> delete(String key) {
         return reactiveRedisClient.del(Arrays.asList(key))
                 .map(response -> null);
     }
